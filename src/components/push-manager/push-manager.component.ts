@@ -171,4 +171,17 @@ export class PushManagerComponent {
     this.selectedCourseId.set('');
     this.campaignName.set('');
   }
+
+  formatVariableLabel(key: string): string {
+    return key.replace(/_/g, ' ').trim().toUpperCase();
+  }
+
+  variablePlaceholder(key: string): string {
+    const map: Record<string, string> = {
+      workspace_name: 'Nome da workspace',
+      nome_do_curso: 'Nome do curso',
+      principal_benefício: 'Benefício principal',
+    };
+    return map[key] ?? 'Digite o valor';
+  }
 }
