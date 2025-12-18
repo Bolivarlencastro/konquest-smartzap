@@ -1,0 +1,26 @@
+/* Smooth transitions for index menu */
+nav {
+  transition: margin-left 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Custom scrollbar for the index */
+nav .overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+nav .overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+nav .overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #d1d5db; /* gray-300 */
+  border-radius: 10px;
+}
+nav .overflow-y-auto:hover::-webkit-scrollbar-thumb {
+    background: #9ca3af; /* gray-400 */
+}
+
+:is(.dark nav .overflow-y-auto::-webkit-scrollbar-thumb) {
+  background: #4b5563; /* gray-600 */
+}
+:is(.dark nav .overflow-y-auto:hover::-webkit-scrollbar-thumb) {
+    background: #374151; /* gray-700 */
+}

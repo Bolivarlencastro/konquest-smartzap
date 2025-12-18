@@ -1,0 +1,431 @@
+<div class="p-4 sm:p-6 lg:p-8 bg-white dark:bg-gray-900">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Gestão de Conteúdos</h1>
+  </div>
+
+
+  <!-- Tabs -->
+  <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
+    <nav class="flex gap-8">
+      <button (click)="setActiveTab('cursos')"
+        class="flex items-center gap-2 py-3 border-b-2 font-medium text-sm transition-colors"
+        [class.border-purple-600]="activeTab() === 'cursos'" [class.text-purple-600]="activeTab() === 'cursos'"
+        [class.border-transparent]="activeTab() !== 'cursos'" [class.text-gray-500]="activeTab() !== 'cursos'"
+        [class.hover:text-gray-700]="activeTab() !== 'cursos'">
+        <span class="material-symbols-outlined">rocket_launch</span>
+        <span>Cursos</span>
+      </button>
+
+      <button (click)="setActiveTab('trilhas')"
+        class="flex items-center gap-2 py-3 border-b-2 font-medium text-sm transition-colors"
+        [class.border-purple-600]="activeTab() === 'trilhas'" [class.text-purple-600]="activeTab() === 'trilhas'"
+        [class.border-transparent]="activeTab() !== 'trilhas'" [class.text-gray-500]="activeTab() !== 'trilhas'"
+        [class.hover:text-gray-700]="activeTab() !== 'trilhas'">
+        <span class="material-symbols-outlined">timeline</span>
+        <span>Trilhas</span>
+      </button>
+
+      <button (click)="setActiveTab('eventos')"
+        class="flex items-center gap-2 py-3 border-b-2 font-medium text-sm transition-colors"
+        [class.border-purple-600]="activeTab() === 'eventos'" [class.text-purple-600]="activeTab() === 'eventos'"
+        [class.border-transparent]="activeTab() !== 'eventos'" [class.text-gray-500]="activeTab() !== 'eventos'"
+        [class.hover:text-gray-700]="activeTab() !== 'eventos'">
+        <span class="material-symbols-outlined">event</span>
+        <span>Eventos</span>
+      </button>
+
+      <button (click)="setActiveTab('smartzap')"
+        class="flex items-center gap-2 py-3 border-b-2 font-medium text-sm transition-colors"
+        [class.border-purple-600]="activeTab() === 'smartzap'" [class.text-purple-600]="activeTab() === 'smartzap'"
+        [class.border-transparent]="activeTab() !== 'smartzap'" [class.text-gray-500]="activeTab() !== 'smartzap'"
+        [class.hover:text-gray-700]="activeTab() !== 'smartzap'">
+        <span class="material-symbols-outlined">chat</span>
+        <span>SmartZap</span>
+      </button>
+    </nav>
+  </div>
+
+
+  <!-- Toolbar -->
+  <div class="flex flex-col xl:flex-row gap-4 justify-between items-start xl:items-center mb-6">
+    <!-- Search -->
+    <div class="relative w-full max-w-md">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Pesquisar"
+        class="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-indigo-500 text-gray-700 dark:text-gray-200">
+    </div>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap gap-2">
+      <button (click)="handleFilter('meus')" [class.bg-indigo-100]="activeFilter() === 'meus'"
+        [class.text-indigo-700]="activeFilter() === 'meus'" [class.border-indigo-200]="activeFilter() === 'meus'"
+        class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-purple-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+        <span class="material-symbols-outlined text-sm">edit</span>
+        Criadas por mim
+      </button>
+
+      <button
+        class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-purple-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+        <span class="material-symbols-outlined text-sm">bookmark</span>
+        Favoritos
+      </button>
+
+      <button
+        class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-purple-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+        <span class="material-symbols-outlined text-sm">language</span>
+        Idioma
+      </button>
+
+      <button
+        class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-purple-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+        <span class="material-symbols-outlined text-sm">circle</span>
+        Status
+      </button>
+
+      <button
+        class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-purple-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+        <span class="material-symbols-outlined text-sm">folder</span>
+        Categoria
+      </button>
+
+      <button
+        class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-purple-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+        <span class="material-symbols-outlined text-sm">trending_up</span>
+        Provedor
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="rounded-lg border border-gray-200 dark:border-gray-700 mb-6">
+    @if (activeTab() === 'smartzap') {
+    <!-- SmartZap Table -->
+    <table class="w-full text-left border-collapse">
+      <thead class="bg-gray-50 dark:bg-gray-800 sticky top-0 z-10">
+        <tr>
+          <th class="py-3 px-4 w-12">
+            <input type="checkbox" class="rounded border-gray-300 dark:border-gray-600">
+          </th>
+          <th class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Nome
+          </th>
+          <th class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+            Propriedade</th>
+          <th class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+            Categoria</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Criação</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Duração</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Inscritos</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Final.</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Status</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-right">
+            Menu</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
+        @for (item of filteredItems(); track item.id) {
+        <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+          <td class="py-4 px-4">
+            <input type="checkbox" class="rounded border-gray-300 dark:border-gray-600">
+          </td>
+          <td class="py-4 px-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-purple-600 dark:text-purple-400">chat</span>
+              </div>
+              <span class="text-sm font-medium text-gray-900 dark:text-gray-200">{{ item.name }}</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">{{ item.property }}</td>
+          <td class="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">{{ item.category }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.creationDate }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.duration }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.enrollments ?? 0 }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.completion ?? 0 }}</td>
+          <td class="py-4 px-4 text-center">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wide"
+              [class.bg-green-100]="item.status === 'published'" [class.text-green-800]="item.status === 'published'"
+              [class.bg-yellow-100]="item.status === 'revision'" [class.text-yellow-800]="item.status === 'revision'"
+              [class.bg-blue-100]="item.status === 'draft'" [class.text-blue-800]="item.status === 'draft'">
+              @if(item.status === 'published') {
+              <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+              } @else if(item.status === 'revision') {
+              <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 mr-1.5"></span>
+              } @else {
+              <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5"></span>
+              }
+              {{ item.statusLabel }}
+            </span>
+          </td>
+          <td class="py-4 px-4 text-right">
+            <button
+              class="p-1 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="material-symbols-outlined">more_vert</span>
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    } @else if (activeTab() === 'trilhas') {
+    <!-- Trilhas Table -->
+    <table class="w-full text-left border-collapse">
+      <thead class="bg-gray-50 dark:bg-gray-800 sticky top-0 z-10">
+        <tr>
+          <th class="py-3 px-4 w-12">
+            <input type="checkbox" class="rounded border-gray-300 dark:border-gray-600">
+          </th>
+          <th class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Nome
+          </th>
+          <th class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Criador
+          </th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Tipo</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Criação</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Duração</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Cursos</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Pulses</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Matrículas</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Status</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-right">
+            Ações</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
+        @for (item of filteredItems(); track item.id) {
+        <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+          <td class="py-4 px-4">
+            <input type="checkbox" class="rounded border-gray-300 dark:border-gray-600">
+          </td>
+          <td class="py-4 px-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-500">
+                <span class="material-symbols-outlined text-sm">timeline</span>
+              </div>
+              <span class="text-sm font-medium text-gray-900 dark:text-gray-200">{{ item.name }}</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">{{ item.creator }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.accessType }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.creationDate }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.duration }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.courses }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.pulses }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.enrollments ?? '--' }}</td>
+          <td class="py-4 px-4 text-center">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wide"
+              [class.bg-green-100]="item.status === 'published'" [class.text-green-800]="item.status === 'published'"
+              [class.bg-blue-100]="item.status === 'draft'" [class.text-blue-800]="item.status === 'draft'">
+              @if(item.status === 'published') {
+              <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+              } @else {
+              <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5"></span>
+              }
+              {{ item.statusLabel }}
+            </span>
+          </td>
+          <td class="py-4 px-4 text-right">
+            <button
+              class="p-1 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="material-symbols-outlined">more_vert</span>
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    } @else if (activeTab() === 'eventos') {
+    <!-- Eventos Table (Simplified) -->
+    <table class="w-full text-left border-collapse">
+      <thead class="bg-gray-50 dark:bg-gray-800 sticky top-0 z-10">
+        <tr>
+          <th class="py-3 px-4 w-12">
+            <input type="checkbox" class="rounded border-gray-300 dark:border-gray-600">
+          </th>
+          <th class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Nome
+          </th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Data</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Matrículas</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Status</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-right">
+            Ações</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
+        @for (item of filteredItems(); track item.id) {
+        <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+          <td class="py-4 px-4">
+            <input type="checkbox" class="rounded border-gray-300 dark:border-gray-600">
+          </td>
+          <td class="py-4 px-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-500">
+                <span class="material-symbols-outlined text-sm">event</span>
+              </div>
+              <span class="text-sm font-medium text-gray-900 dark:text-gray-200">{{ item.name }}</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.date || '--' }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.enrollments ?? '--' }}</td>
+          <td class="py-4 px-4 text-center">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wide"
+              [class.bg-green-100]="item.status === 'published'" [class.text-green-800]="item.status === 'published'"
+              [class.bg-red-100]="item.status === 'archived'" [class.text-red-800]="item.status === 'archived'">
+              @if(item.status === 'published') {
+              <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+              } @else {
+              <span class="w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5"></span>
+              }
+              {{ item.statusLabel }}
+            </span>
+          </td>
+          <td class="py-4 px-4 text-right">
+            <button
+              class="p-1 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="material-symbols-outlined">more_vert</span>
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    } @else {
+    <!-- Cursos Table -->
+    <table class="w-full text-left border-collapse">
+      <thead class="bg-gray-50 dark:bg-gray-800 sticky top-0 z-10">
+        <tr>
+          <th class="py-3 px-4 w-12">
+            <input type="checkbox" class="rounded border-gray-300 dark:border-gray-600">
+          </th>
+          <th class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Nome
+          </th>
+          <th class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Criador
+          </th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Tipo</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Duração</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Perf. mín.</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Matrículas</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-center">
+            Status</th>
+          <th
+            class="py-3 px-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-right">
+            Ações</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
+        @for (item of filteredItems(); track item.id) {
+        <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+          <td class="py-4 px-4">
+            <input type="checkbox" class="rounded border-gray-300 dark:border-gray-600">
+          </td>
+          <td class="py-4 px-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-500">
+                <span class="material-symbols-outlined text-sm">rocket_launch</span>
+              </div>
+              <span class="text-sm font-medium text-gray-900 dark:text-gray-200">{{ item.name }}</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">{{ item.creator }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.accessType }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.duration }}</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.minPerformance }}%</td>
+          <td class="py-4 px-4 text-sm text-center text-gray-600 dark:text-gray-400">{{ item.enrollments ?? '--' }}</td>
+          <td class="py-4 px-4 text-center">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wide"
+              [class.bg-green-100]="item.status === 'published'" [class.text-green-800]="item.status === 'published'"
+              [class.bg-blue-100]="item.status === 'draft'" [class.text-blue-800]="item.status === 'draft'">
+              @if(item.status === 'published') {
+              <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+              } @else {
+              <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5"></span>
+              }
+              {{ item.statusLabel }}
+            </span>
+          </td>
+          <td class="py-4 px-4 text-right">
+            <button
+              class="p-1 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="material-symbols-outlined">more_vert</span>
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
+
+  <!-- Footer Pagination -->
+  <div class="mt-4 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-600 dark:text-gray-400">
+    <div class="flex items-center gap-2 mb-4 sm:mb-0">
+      <span>Itens por página</span>
+      <select [(ngModel)]="pageSize"
+        class="border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 py-1 px-2 focus:ring-1 focus:ring-indigo-500">
+        <option [ngValue]="10">10</option>
+        <option [ngValue]="25">25</option>
+        <option [ngValue]="50">50</option>
+      </select>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <span>1 - {{ filteredItems().length < pageSize() ? filteredItems().length : pageSize() }} de {{ totalItems()
+          }}</span>
+          <div class="flex items-center gap-1">
+            <button class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50" [disabled]="true">
+              <span class="material-symbols-outlined text-lg">first_page</span>
+            </button>
+            <button class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50" [disabled]="true">
+              <span class="material-symbols-outlined text-lg">chevron_left</span>
+            </button>
+            <button class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50" [disabled]="true">
+              <span class="material-symbols-outlined text-lg">chevron_right</span>
+            </button>
+            <button class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50" [disabled]="true">
+              <span class="material-symbols-outlined text-lg">last_page</span>
+            </button>
+          </div>
+    </div>
+  </div>
+</div>

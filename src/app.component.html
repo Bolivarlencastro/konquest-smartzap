@@ -1,0 +1,422 @@
+@if (isFullScreenView()) {
+@switch(viewState()) {
+@case('courseWizard') {
+@if(courseData(); as course) {
+<app-course-wizard [initialCourseData]="course" [startAtStep]="wizardStartStep()" (exit)="exitWizard()"
+  (preview)="handleCoursePreview($event)" />
+}
+}
+@case('trailWizard') {
+@if(trailData(); as trail) {
+<app-trail-wizard [initialTrailData]="trail" (exit)="exitTrailWizard()" />
+}
+}
+@case('eventWizard') {
+@if(eventData(); as event) {
+<app-event-wizard [initialEventData]="event" (exit)="exitEventWizard()" />
+}
+}
+@case('channelWizard') {
+@if(channelData(); as channel) {
+<app-channel-wizard [initialChannelData]="channel" (exit)="exitChannelWizard()" />
+}
+}
+@case('coursePlayer') {
+@if(courseData(); as course) {
+<app-course-player [course]="course" [isFullScreen]="isFullScreen()" (exit)="exitCoursePlayer()"
+  (toggleFullScreen)="toggleFullScreen()" />
+}
+}
+@case('settings') {
+<app-settings (exit)="navigateToDashboard()"></app-settings>
+}
+}
+} @else {
+<div class="flex h-screen bg-gray-100 dark:bg-slate-900 font-sans">
+  <div class="relative shrink-0">
+    <!-- L1 Sidebar -->
+    <aside class="w-28 bg-purple-900 p-2 flex flex-col h-full shrink-0">
+      <div class="shrink-0 h-20 w-full flex items-center justify-center">
+        <span class="material-symbols-outlined text-4xl text-white opacity-90">widgets</span>
+      </div>
+      <nav class="flex flex-col items-center gap-2 w-full">
+        <a (click)="navigateToDashboard()"
+          class="flex flex-col items-center justify-center gap-1 w-full py-3 rounded-lg transition-colors cursor-pointer"
+          [class.bg-black/25]="viewState() === 'dashboard'" [class.text-white]="viewState() === 'dashboard'"
+          [class.text-white/75]="viewState() !== 'dashboard'" [class.hover:bg-white/10]="viewState() !== 'dashboard'"
+          [class.hover:text-white]="viewState() !== 'dashboard'">
+          <span class="material-symbols-outlined text-2xl">home</span>
+          <span class="text-xs font-medium">Início</span>
+        </a>
+        <a href="#"
+          class="flex flex-col items-center justify-center gap-1 w-full py-3 rounded-lg transition-colors text-white/75 hover:bg-white/10 hover:text-white">
+          <span class="material-symbols-outlined text-2xl">track_changes</span>
+          <span class="text-xs font-medium">Pulses</span>
+        </a>
+        <a href="#"
+          class="flex flex-col items-center justify-center gap-1 w-full py-3 rounded-lg transition-colors text-white/75 hover:bg-white/10 hover:text-white">
+          <span class="material-symbols-outlined text-2xl">school</span>
+          <span class="text-xs font-medium">Matrículas</span>
+        </a>
+      </nav>
+      <div class="flex-grow"></div>
+      <div class="flex flex-col items-center gap-2 w-full">
+        <button (click)="toggleAdminMenu()"
+          class="flex flex-col items-center justify-center gap-1 w-full py-3 rounded-lg transition-colors"
+          [class.bg-purple-800]="isAdminMenuOpen()" [class.text-white]="isAdminMenuOpen()"
+          [class.text-white/75]="!isAdminMenuOpen()" [class.hover:bg-white/10]="!isAdminMenuOpen()"
+          [class.hover:text-white]="!isAdminMenuOpen()">
+          <span class="material-symbols-outlined text-2xl">settings</span>
+          <span class="text-xs font-medium">Admin</span>
+        </button>
+        <a href="#"
+          class="flex flex-col items-center justify-center gap-1 w-full py-3 rounded-lg transition-colors text-white/75 hover:bg-white/10 hover:text-white">
+          <span class="material-symbols-outlined text-2xl">help</span>
+          <span class="text-xs font-medium">Ajuda</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- L2 Admin Floating Menu -->
+    @if (isAdminMenuOpen()) {
+    <!-- Backdrop -->
+    <div (click)="toggleAdminMenu()" class="fixed inset-0 z-40"></div>
+    <!-- Menu Panel -->
+    <div
+      class="absolute left-full top-0 h-full w-64 bg-purple-800 z-50 p-4 flex flex-col text-white/90 animate-fade-in-fast overflow-y-auto">
+      <nav class="flex-1 space-y-4 text-sm font-medium">
+
+        <!-- Sistema -->
+        <div>
+          <div class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2 px-3">Sistema</div>
+          <a (click)="navigateToSettings()" class="block py-2 pl-6 pr-3 rounded-md hover:bg-white/10 cursor-pointer">Configurações</a>
+          <a href="#" class="block py-2 pl-6 pr-3 rounded-md hover:bg-white/10">Log de Atividades</a>
+        </div>
+
+        <!-- Organização -->
+        <div>
+          <div class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2 px-3">Organização</div>
+          <a href="#" class="block py-2 pl-6 pr-3 rounded-md hover:bg-white/10">Grupos</a>
+          <a href="#" class="block py-2 pl-6 pr-3 rounded-md hover:bg-white/10">Categorias</a>
+          <a href="#" class="block py-2 pl-6 pr-3 rounded-md hover:bg-white/10">Transferências</a>
+        </div>
+
+        <!-- Conteúdo -->
+        <div>
+          <div class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2 px-3">Conteúdo</div>
+          <a (click)="navigateToContentManagement()"
+            class="block py-2 pl-6 pr-3 rounded-md hover:bg-white/10 cursor-pointer">Gerenciar Conteúdo</a>
+          <a (click)="navigateToEnrollmentManagement()"
+            class="block py-2 pl-6 pr-3 rounded-md hover:bg-white/10 cursor-pointer">Gestão de Matrículas</a>
+        </div>
+
+        <!-- Personalização -->
+        <div>
+          <div class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2 px-3">Personalização</div>
+          <a href="#" class="block py-2 pl-6 pr-3 rounded-md hover:bg-white/10">Certificados Personalizados</a>
+          <a href="#" class="block py-2 pl-6 pr-3 rounded-md hover:bg-white/10">Seções Personalizadas</a>
+        </div>
+
+        <!-- Extensões -->
+        <div>
+          <div class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2 px-3">Extensões</div>
+          <a href="#" class="block py-2 pl-6 pr-3 rounded-md hover:bg-white/10">Integrações</a>
+          <a href="#" class="block py-2 pl-6 pr-3 rounded-md hover:bg-white/10">Marketplace</a>
+        </div>
+
+      </nav>
+    </div>
+    }
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header
+      class="bg-white dark:bg-slate-800 shadow-sm h-16 border-b border-gray-200 dark:border-gray-700/60 flex items-center justify-between z-40 px-4 gap-4">
+      <!-- Left Side -->
+      <div class="flex items-center gap-4 flex-1">
+        <button
+          class="w-12 h-12 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <button
+          class="hidden sm:flex items-center gap-2 h-12 w-full bg-gray-100 dark:bg-gray-700/50 rounded-full px-4 text-left text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700">
+          <span class="material-symbols-outlined">search</span>
+          <span>Buscar cursos, trilhas, eventos...</span>
+        </button>
+      </div>
+
+      <!-- Right Side -->
+      <div class="flex items-center gap-2">
+        <div class="relative">
+          <button (click)="toggleCreateMenu()"
+            class="w-12 h-12 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700">
+            <span class="material-symbols-outlined">add</span>
+          </button>
+          @if(showCreateMenu()) {
+          <!-- Backdrop -->
+          <div (click)="toggleCreateMenu()" class="fixed inset-0 z-40"></div>
+          <!-- Menu -->
+          <div
+            class="absolute right-0 mt-2 w-60 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5 dark:ring-1 dark:ring-white dark:ring-opacity-5">
+            <a (click)="startSmartZapCreationFlow()"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="material-symbols-outlined mr-3 text-gray-500 dark:text-gray-400">chat</span>
+              <span class="flex-1">Criar SmartZap</span>
+              <span class="ml-3 text-[11px] font-semibold text-green-700 bg-green-100 dark:text-green-100 dark:bg-green-700/40 px-2 py-0.5 rounded-full">Novo</span>
+            </a>
+            <a (click)="startCreationFlow()"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="material-symbols-outlined mr-3 text-gray-500 dark:text-gray-400">rocket_launch</span>
+              <span>Criar Curso</span>
+            </a>
+            <a (click)="startTrailCreationFlow()"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="material-symbols-outlined mr-3 text-gray-500 dark:text-gray-400">timeline</span>
+              <span>Criar Trilha</span>
+            </a>
+            <a (click)="startEventCreationFlow()"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="material-symbols-outlined mr-3 text-gray-500 dark:text-gray-400">event</span>
+              <span>Criar Evento</span>
+            </a>
+            <a (click)="startChannelCreationFlow()"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="material-symbols-outlined mr-3 text-gray-500 dark:text-gray-400">hub</span>
+              <span>Criar Canal</span>
+            </a>
+            <a (click)="startPulseCreationFlow()"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="material-symbols-outlined mr-3 text-gray-500 dark:text-gray-400">track_changes</span>
+              <span>Criar Pulse</span>
+            </a>
+            <a (click)="startGroupCreationFlow()"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="material-symbols-outlined mr-3 text-gray-500 dark:text-gray-400">group_add</span>
+              <span>Criar Grupo</span>
+            </a>
+          </div>
+          }
+        </div>
+        <button (click)="toggleFullScreen()"
+          class="hidden sm:flex w-12 h-12 items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700">
+          <span class="material-symbols-outlined">
+            @if(isFullScreen()) {
+            fullscreen_exit
+            } @else {
+            fullscreen
+            }
+          </span>
+        </button>
+        <button
+          class="w-12 h-12 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"><span
+            class="material-symbols-outlined">notifications</span></button>
+        <button
+          class="w-12 h-12 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"><span
+            class="material-symbols-outlined">apps</span></button>
+
+        <div class="hidden sm:block h-8 w-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
+
+        <div class="hidden sm:flex items-center gap-1.5 p-2">
+          <span class="material-symbols-outlined text-gray-500 dark:text-gray-400">payments</span>
+          <div class="flex flex-col items-start leading-tight">
+            <span class="text-sm font-bold text-gray-800 dark:text-gray-200">1.721</span>
+            <span
+              class="text-[10px] font-semibold tracking-wider uppercase text-gray-500 dark:text-gray-400">Pontos</span>
+          </div>
+        </div>
+
+        <div class="hidden sm:block h-8 w-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
+
+        <div class="relative">
+          <button (click)="toggleUserMenu()"
+            class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+            <img src="https://picsum.photos/32/32" alt="User Avatar" class="h-8 w-8 rounded-full object-cover">
+            <div class="hidden md:flex flex-col items-start text-left leading-tight">
+              <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">Super Admin</span>
+              <span class="text-xs text-gray-500 dark:text-gray-400">Admin</span>
+            </div>
+            <span class="hidden md:block material-symbols-outlined text-gray-500 dark:text-gray-400">expand_more</span>
+          </button>
+          @if(showUserMenu()) {
+          <!-- Backdrop -->
+          <div (click)="toggleUserMenu()" class="fixed inset-0 z-40"></div>
+          <!-- Menu -->
+          <div
+            class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5 dark:ring-1 dark:ring-white dark:ring-opacity-5">
+            <a (click)="handleSettings()"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="material-symbols-outlined mr-3 text-base text-gray-500 dark:text-gray-400">settings</span>
+              <span>Configurações</span>
+            </a>
+            <a (click)="handleSwitchWorkspace()"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="material-symbols-outlined mr-3 text-base text-gray-500 dark:text-gray-400">swap_horiz</span>
+              <span>Trocar workspace</span>
+            </a>
+            <div class="border-t my-1 border-gray-200 dark:border-gray-700"></div>
+            <a (click)="handleLogout()"
+              class="flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 cursor-pointer">
+              <span class="material-symbols-outlined mr-3 text-base">logout</span>
+              <span>Sair da conta</span>
+            </a>
+          </div>
+          }
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="flex-1 overflow-y-auto">
+      @switch(viewState()) {
+      @case('dashboard') {
+      <div class="p-4 sm:p-6 lg:p-8">
+        <div
+          class="relative w-full aspect-[2/1] md:aspect-[3/1] bg-gray-800 border border-gray-700 rounded-2xl shadow-md mb-6">
+          <button class="absolute top-4 right-4 p-2 rounded-full text-white/70 hover:bg-white/10 transition-colors">
+            <span class="material-symbols-outlined">settings</span>
+          </button>
+          <div class="w-full h-full flex justify-between items-end p-4 md:p-6 lg:p-8">
+            <h1 class="text-white text-xl sm:text-2xl lg:text-3xl font-bold">missão da trilha</h1>
+            <button
+              class="bg-violet-300 text-violet-900 font-semibold py-1.5 px-5 text-sm sm:py-2 sm:px-6 sm:text-base rounded-full hover:bg-violet-200 transition-colors">+
+              Detalhes</button>
+          </div>
+        </div>
+
+        <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
+          <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+            @for (tab of tabs; track tab.id) {
+            <button (click)="setActiveTab(tab.id)"
+              class="flex items-center gap-2 whitespace-nowrap py-4 px-1 border-b-2 font-semibold text-sm transition-colors"
+              [class.border-fuchsia-500]="activeTab() === tab.id" [class.text-fuchsia-500]="activeTab() === tab.id"
+              [class.dark:border-fuchsia-400]="activeTab() === tab.id"
+              [class.dark:text-fuchsia-400]="activeTab() === tab.id" [class.border-transparent]="activeTab() !== tab.id"
+              [class.text-gray-500]="activeTab() !== tab.id" [class.dark:text-gray-400]="activeTab() !== tab.id"
+              [class.hover:border-gray-300]="activeTab() !== tab.id"
+              [class.dark:hover:border-gray-600]="activeTab() !== tab.id"
+              [class.hover:text-gray-700]="activeTab() !== tab.id"
+              [class.dark:hover:text-gray-700]="activeTab() !== tab.id">
+              <span class="material-symbols-outlined">{{ tab.icon }}</span>
+              <span>{{ tab.name }}</span>
+            </button>
+            }
+          </nav>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="mt-6 text-center py-16 text-gray-500 dark:text-gray-400">
+          <span class="material-symbols-outlined text-6xl">construction</span>
+          <p class="mt-4 text-lg">Conteúdo da aba <span class="font-semibold">{{activeTab()}}</span> em breve.</p>
+        </div>
+
+      </div>
+      }
+      @case('groupManagement') {
+      <app-group-management [startWithCreateModal]="shouldOpenGroupCreateModal()"></app-group-management>
+      }
+      @case('contentManagement') {
+      <app-content-management></app-content-management>
+      }
+      @case('enrollmentManagement') {
+      <app-enrollment-management></app-enrollment-management>
+      }
+      @case('settings') {
+      <app-settings (exit)="navigateToDashboard()"></app-settings>
+      }
+      }
+    </main>
+  </div>
+</div>
+
+<!-- MODALS -->
+@switch (viewState()) {
+@case('createCourseModal') {
+<app-create-course-modal (close)="closeModals()" (startFromScratch)="handleStartFromScratch()" (useAi)="handleUseAi()"
+  (importFile)="handleImportFile()"></app-create-course-modal>
+}
+@case('aiCreationModal') {
+<app-ai-creation-modal (close)="closeModals()" (back)="handleGoBack('aiCourse')"
+  (courseGenerated)="handleAiCourseGenerated($event)"></app-ai-creation-modal>
+}
+@case('importSourceModal') {
+<app-import-source-modal (close)="closeModals()" (back)="handleGoBack('importSource')"
+  (sourceSelected)="handleImportSourceSelected($event)"></app-import-source-modal>
+}
+@case('fileUploadModal') {
+@if(importSource(); as source) {
+<app-file-upload-modal [source]="source" (close)="closeModals()" (back)="handleGoBack('fileUpload')"
+  (import)="handleFileImported($event)"></app-file-upload-modal>
+}
+}
+@case('createTrailModal') {
+<app-create-trail-modal (close)="closeModals()" (startFromScratch)="handleStartTrailFromScratch()"
+  (useAi)="handleUseAiForTrail()"></app-create-trail-modal>
+}
+@case('aiTrailCreationModal') {
+<app-ai-trail-creation-modal (close)="closeModals()" (back)="handleGoBack('aiTrail')"
+  (trailGenerated)="handleAiTrailGenerated($event)"></app-ai-trail-creation-modal>
+}
+@case('createEventModal') {
+<app-create-event-modal (close)="closeModals()" (startFromScratch)="handleStartEventFromScratch()"
+  (useAi)="handleUseAiForEvent()"></app-create-event-modal>
+}
+@case('aiEventCreationModal') {
+<app-ai-event-creation-modal (close)="closeModals()" (back)="handleGoBack('aiEvent')"
+  (eventGenerated)="handleAiEventGenerated($event)"></app-ai-event-creation-modal>
+}
+@case('createChannelModal') {
+<app-create-channel-modal (close)="closeModals()" (startFromScratch)="handleStartChannelFromScratch()"
+  (useAi)="handleUseAiForChannel()"></app-create-channel-modal>
+}
+@case('aiChannelCreationModal') {
+<app-ai-channel-creation-modal (close)="closeModals()" (back)="handleGoBack('aiChannel')"
+  (channelGenerated)="handleAiChannelGenerated($event)"></app-ai-channel-creation-modal>
+}
+@case('createPulseModal') {
+<app-create-pulse-modal (close)="closeModals()"
+  (pulseTypeSelected)="handlePulseTypeSelected($event)"></app-create-pulse-modal>
+}
+@case('pulseEditorModal') {
+@if(pulseData(); as pulse) {
+<app-pulse-editor-modal [initialPulseData]="pulse" (close)="closeModals()"
+  (save)="handlePulseSaved($event)"></app-pulse-editor-modal>
+}
+}
+@case('createGroupModal') {
+<app-create-group-modal (close)="closeModals()" (groupCreated)="handleGroupCreated($event)"></app-create-group-modal>
+}
+@case('quizCreationMethod') {
+<app-quiz-creation-method-modal (close)="closeModals()"
+  (creationMethodSelected)="handleQuizCreationMethodSelected($event)"></app-quiz-creation-method-modal>
+}
+@case('quizAiAssistant') {
+<app-quiz-ai-assistant-modal [contextContent]="[]" (close)="closeModals()" (back)="handleGoBack('aiQuiz')"
+  (quizGenerated)="handleAiQuizGenerated($event)"></app-quiz-ai-assistant-modal>
+}
+@case('quizEditor') {
+@if(pulseData(); as quiz) {
+<app-quiz-editor-modal [initialPulseData]="quiz" (close)="closeModals()"
+  (save)="handleQuizSaved($event)"></app-quiz-editor-modal>
+}
+}
+}
+}
+<style>
+  .animate-fade-in-fast {
+    animation: fadeIn 0.15s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+</style>
