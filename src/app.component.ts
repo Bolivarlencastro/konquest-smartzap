@@ -244,6 +244,11 @@ export class AppComponent {
     this._isAdminMenuOpen.set(false);
   }
 
+  navigateToPushManager(): void {
+    this.viewState.set('pushManager');
+    this._isAdminMenuOpen.set(false);
+  }
+
   // --- Course Handlers ---
   handleStartFromScratch(): void {
     this.courseData.set(JSON.parse(JSON.stringify(EMPTY_COURSE))); // Deep copy
