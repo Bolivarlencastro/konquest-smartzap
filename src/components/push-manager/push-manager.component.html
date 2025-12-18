@@ -1,0 +1,371 @@
+<div class="min-h-full bg-gray-50 flex flex-col">
+  @if (view() === 'dashboard') {
+    <div class="p-6 lg:p-10 max-w-7xl mx-auto animate-fade-in space-y-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-semibold text-gray-900 tracking-tight">Painel de Comunicação</h1>
+          <p class="text-gray-500 text-sm mt-1">Gestão de engajamento e métricas de conversão.</p>
+        </div>
+        <button
+          (click)="view.set('sender')"
+          class="bg-[#1e88e5] hover:bg-[#1976d2] text-white px-6 py-2.5 rounded-full font-medium flex items-center justify-center gap-2 transition-all shadow-sm hover:shadow-md active:scale-95 text-sm">
+          <span class="material-symbols-outlined text-base">add</span>
+          CRIAR NOVO PUSH
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col gap-4 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-4xl text-blue-600">notifications</span>
+          </div>
+          <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Total Disparos</p>
+          <div class="flex items-baseline gap-2">
+            <span class="text-4xl font-bold text-gray-900">36.450</span>
+            <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">+12%</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col gap-4 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-4xl text-blue-800">payments</span>
+          </div>
+          <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Investimento Total</p>
+          <div class="flex items-baseline gap-2">
+            <span class="text-4xl font-bold text-gray-900">R$ 4.350</span>
+            <span class="text-gray-400 text-sm font-medium">,75</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col gap-4 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-4xl text-orange-600">query_stats</span>
+          </div>
+          <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">ROI / Matrícula</p>
+          <div class="flex items-baseline gap-2">
+            <span class="text-4xl font-bold text-orange-600">R$ 3,52</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-8">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center gap-3 bg-gray-50/30">
+            <span class="material-symbols-outlined text-blue-600">event</span>
+            <h2 class="text-base font-bold text-gray-800">Próximos Agendamentos</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="bg-white border-b border-gray-100">
+                  <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Campanha</th>
+                  <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Data Programada</th>
+                  <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Contatos</th>
+                  <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                @for (scheduled of scheduledPushes; track scheduled.id) {
+                  <tr class="hover:bg-gray-50/50 transition-colors">
+                    <td class="px-6 py-4 font-medium text-gray-900">{{ scheduled.name }}</td>
+                    <td class="px-6 py-4 text-gray-600 text-center text-sm">{{ scheduled.scheduledDate }}</td>
+                    <td class="px-6 py-4 font-semibold text-gray-900 text-center text-sm">{{ scheduled.totalPush | number }}</td>
+                    <td class="px-6 py-4 text-right">
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-100 uppercase tracking-tight">
+                        {{ scheduled.status }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center gap-3 bg-gray-50/30">
+            <span class="material-symbols-outlined text-gray-500">schedule</span>
+            <h2 class="text-base font-bold text-gray-800">Histórico de Disparos</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="bg-white border-b border-gray-100">
+                  <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Nome do Curso</th>
+                  <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Data Disparo</th>
+                  <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Disparos</th>
+                  <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Custo Total</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                @for (campaign of campaigns; track campaign.id) {
+                  <tr class="hover:bg-gray-50/50 transition-colors">
+                    <td class="px-6 py-4 font-medium text-gray-900">{{ campaign.courseName }}</td>
+                    <td class="px-6 py-4 text-gray-600 text-center text-sm">{{ campaign.dispatchDate }}</td>
+                    <td class="px-6 py-4 font-semibold text-gray-900 text-center text-sm">{{ campaign.totalPush | number }}</td>
+                    <td class="px-6 py-4 font-bold text-blue-600 text-right text-sm">
+                      R$ {{ campaign.investment | number:'1.2-2' }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (view() === 'sender') {
+    <div class="flex flex-col min-h-[calc(100vh-64px)] animate-fade-in bg-[#fdfdfd]">
+      <div class="bg-white border-b border-gray-200 px-10 py-4 flex items-center justify-between shadow-sm sticky top-0 z-30">
+        <div class="flex items-center gap-8">
+          @for (s of steps; track s.id; let idx = $index) {
+            <div class="flex items-center gap-3 transition-opacity" [class.opacity-40]="step() < s.id">
+              <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold"
+                [class.bg-green-600]="step() > s.id" [class.text-white]="step() >= s.id"
+                [class.bg-[#1e88e5]]="step() === s.id" [class.text-white]="step() === s.id"
+                [class.bg-gray-200]="step() < s.id" [class.text-gray-600]="step() < s.id">
+                @if(step() > s.id) {
+                  <span class="material-symbols-outlined text-xs">check</span>
+                } @else {
+                  {{ s.id }}
+                }
+              </div>
+              <div class="hidden lg:block">
+                <p class="text-[11px] font-bold uppercase tracking-wider text-gray-900">{{ s.label }}</p>
+                <p class="text-[11px] text-gray-500">{{ s.description }}</p>
+              </div>
+              @if (idx < steps.length - 1) {
+                <div class="h-[1px] w-8 bg-gray-200"></div>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button (click)="handleBack()"
+            class="px-6 py-2 rounded-full text-[#1e88e5] font-semibold text-xs uppercase tracking-widest hover:bg-blue-50 transition-colors">
+            Voltar
+          </button>
+          @if (step() < 4) {
+            <button [disabled]="isStepDisabled(step()+1)" (click)="handleNext()"
+              class="px-8 py-2.5 rounded-full bg-[#1e88e5] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#1565c0] transition-all disabled:opacity-40 shadow-sm">
+              Avançar
+            </button>
+          } @else {
+            <button [disabled]="isSubmitting()" (click)="finishPush()"
+              class="px-8 py-2.5 rounded-full bg-green-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-green-700 transition-all disabled:opacity-40 shadow-sm flex items-center gap-2">
+              {{ isSubmitting() ? 'PROCESSANDO...' : 'FINALIZAR DISPARO' }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="flex-1 p-6 lg:p-10 max-w-[1400px] mx-auto w-full space-y-6">
+        <div class="grid grid-cols-1 xl:grid-cols-[1.2fr_0.8fr] gap-6">
+          <div class="space-y-4">
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <p class="text-xs uppercase tracking-wider text-gray-500 font-bold">Templates</p>
+                  <h3 class="text-lg font-semibold text-gray-900">Modelos prontos</h3>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                @for (tpl of templates; track tpl.id) {
+                  <button (click)="setTemplate(tpl)"
+                    class="border rounded-xl p-3 text-left transition shadow-sm hover:shadow-md"
+                    [class.border-[#1e88e5]]="selectedTemplate()?.id === tpl.id">
+                    <p class="text-sm font-semibold text-gray-900 mb-1">{{ tpl.name }}</p>
+                    <p class="text-xs text-gray-500 line-clamp-2 whitespace-pre-wrap">{{ tpl.content }}</p>
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 space-y-3">
+                <h4 class="text-sm font-semibold text-gray-900">Variáveis do template</h4>
+                @if (extractedVariables().length === 0) {
+                  <p class="text-xs text-gray-500">Selecione um template para preencher as variáveis.</p>
+                } @else {
+                  <div class="space-y-3">
+                    @for (v of extractedVariables(); track v) {
+                      <label class="space-y-1 block">
+                        <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">{{ v }}</span>
+                        <input type="text" [ngModel]="variableValues()[v]" (ngModelChange)="setVariable(v, $event)"
+                          class="w-full px-3 py-2 border rounded-lg focus:border-[#1e88e5] focus:ring-[#1e88e5] outline-none" />
+                      </label>
+                    }
+                  </div>
+                }
+              </div>
+
+              <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 space-y-3">
+                <h4 class="text-sm font-semibold text-gray-900">Envio e curso</h4>
+                <label class="space-y-1 block">
+                  <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Data do disparo</span>
+                  <input type="datetime-local" [ngModel]="dispatchDate()" (ngModelChange)="dispatchDate.set($event)"
+                    class="w-full px-3 py-2 border rounded-lg focus:border-[#1e88e5] focus:ring-[#1e88e5] outline-none" />
+                </label>
+                <div class="flex items-center gap-2 text-sm">
+                  <label class="flex items-center gap-2">
+                    <input type="radio" [ngModel]="isLinkedToCourse()" (ngModelChange)="isLinkedToCourse.set(true)" [value]="true" />
+                    <span>Vincular a um curso</span>
+                  </label>
+                  <label class="flex items-center gap-2">
+                    <input type="radio" [ngModel]="isLinkedToCourse()" (ngModelChange)="isLinkedToCourse.set(false)" [value]="false" />
+                    <span>Campanha avulsa</span>
+                  </label>
+                </div>
+
+                @if (isLinkedToCourse()) {
+                  <label class="space-y-1 block">
+                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Curso</span>
+                    <select [ngModel]="selectedCourseId()" (ngModelChange)="selectedCourseId.set($event)"
+                      class="w-full px-3 py-2 border rounded-lg focus:border-[#1e88e5] focus:ring-[#1e88e5] outline-none">
+                      <option value="" disabled>Selecione</option>
+                      @for (c of campaigns; track c.id) {
+                        <option [value]="c.id">{{ c.courseName }}</option>
+                      }
+                    </select>
+                  </label>
+                } @else {
+                  <label class="space-y-1 block">
+                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Nome da campanha</span>
+                    <input type="text" [ngModel]="campaignName()" (ngModelChange)="campaignName.set($event)"
+                      class="w-full px-3 py-2 border rounded-lg focus:border-[#1e88e5] focus:ring-[#1e88e5] outline-none" />
+                  </label>
+                }
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-4">
+              <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 space-y-3">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h4 class="text-sm font-semibold text-gray-900">Base de contatos</h4>
+                    <p class="text-xs text-gray-500">Upload CSV com colunas nome e telefone.</p>
+                  </div>
+                  <label class="bg-[#1e88e5] hover:bg-[#1976d2] text-white px-4 py-2 rounded-full font-semibold text-xs cursor-pointer">
+                    Upload base
+                    <input type="file" class="hidden" (change)="handleFileUpload($any($event.target).files?.[0]?.name || '')" />
+                  </label>
+                </div>
+                @if (fileName()) {
+                  <div class="text-xs text-gray-700 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 flex items-center justify-between">
+                    <span>{{ fileName() }}</span>
+                    <button class="text-red-500 text-xs font-semibold" (click)="fileName.set(null); contacts.set([]);">Remover</button>
+                  </div>
+                }
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-sm">
+                    <thead>
+                      <tr class="bg-gray-50 border-b border-gray-100">
+                        <th class="px-3 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">Nome</th>
+                        <th class="px-3 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">Telefone</th>
+                        <th class="px-3 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                      @for (c of contacts(); track c.id) {
+                        <tr>
+                          <td class="px-3 py-2 font-medium text-gray-900">{{ c.nome }}</td>
+                          <td class="px-3 py-2 text-gray-700">{{ c.telefone }}</td>
+                          <td class="px-3 py-2">
+                            @if (c.erro) {
+                              <span class="text-xs font-semibold text-red-600">{{ c.erro }}</span>
+                            } @else {
+                              <span class="text-xs font-semibold text-green-600">OK</span>
+                            }
+                          </td>
+                        </tr>
+                      } @empty {
+                        <tr>
+                          <td colspan="3" class="px-3 py-3 text-xs text-gray-500 text-center">Nenhum contato carregado</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 space-y-3">
+                <h4 class="text-sm font-semibold text-gray-900">Preview WhatsApp</h4>
+                @if (!selectedTemplate()) {
+                  <div class="bg-gray-100 rounded-3xl h-full flex flex-col items-center justify-center p-8 text-center border-2 border-dashed border-gray-300">
+                    <span class="material-symbols-outlined text-4xl text-gray-300 mb-3">smartphone</span>
+                    <p class="text-gray-400 font-medium text-sm">Selecione um template para visualizar</p>
+                  </div>
+                } @else {
+                  <div class="bg-[#e5ddd5] rounded-3xl p-5 min-h-[420px] shadow-inner relative overflow-hidden flex flex-col">
+                    <div class="flex items-center gap-3 mb-5 bg-white/50 p-3 rounded-2xl backdrop-blur-md border border-white/30 shadow-sm">
+                      <div class="w-10 h-10 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-sm font-bold">W</div>
+                      <div>
+                        <p class="text-xs font-bold text-gray-800">WhatsApp Business</p>
+                        <p class="text-[10px] text-gray-500">Online</p>
+                      </div>
+                    </div>
+                    <div class="max-w-[90%] self-start">
+                      <div class="bg-white p-4 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl shadow-sm relative mb-2">
+                        <p class="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap">
+                          {{ selectedTemplate()?.content }}
+                        </p>
+                        <p class="text-[10px] text-gray-400 text-right mt-1">10:45</p>
+                        <div class="absolute -left-2 top-0 w-3 h-3 bg-white rotate-45 transform origin-top-right"></div>
+                      </div>
+                      @if (selectedTemplate()?.buttons?.length) {
+                        @for (btn of selectedTemplate()?.buttons ?? []; track btn) {
+                          <div class="bg-white border-t border-gray-50 rounded-xl py-3 px-4 shadow-sm flex items-center justify-center gap-2 mb-1.5 cursor-default hover:bg-gray-50 transition-colors">
+                            <span class="material-symbols-outlined text-sm text-blue-600">open_in_new</span>
+                            <span class="text-xs font-semibold text-blue-600 uppercase tracking-tight">{{ btn }}</span>
+                          </div>
+                        }
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-600">Resumo rápido</span>
+              <span class="text-xs font-semibold text-gray-500">DDD Brasil</span>
+            </div>
+            <div class="space-y-2 text-sm text-gray-700">
+              <div class="flex items-center justify-between">
+                <span>Template</span>
+                <span class="font-semibold">{{ selectedTemplate()?.name || '—' }}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span>Base</span>
+                <span class="font-semibold">{{ contacts().length ? (contacts().length + ' contatos') : 'Nenhuma base' }}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span>Data</span>
+                <span class="font-semibold">{{ dispatchDate() || 'Não definido' }}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span>Vínculo</span>
+                <span class="font-semibold">
+                  {{ isLinkedToCourse() ? (selectedCourseId() ? 'Curso selecionado' : 'Selecione um curso') : (campaignName() || 'Campanha avulsa') }}
+                </span>
+              </div>
+            </div>
+            <div class="text-xs text-gray-500">
+              Custos extras para alunos com DDD internacional são tratados nos cursos SmartZap.
+            </div>
+            <button [disabled]="isStepDisabled(4)" (click)="step.set(4)"
+              class="w-full bg-[#1e88e5] text-white px-4 py-3 rounded-full font-semibold hover:bg-[#1976d2] transition disabled:opacity-40">
+              Revisar e finalizar
+            </button>
+            <button (click)="view.set('dashboard')" class="w-full border border-gray-300 text-gray-800 px-4 py-2 rounded-full font-semibold hover:border-gray-400 transition">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

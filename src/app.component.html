@@ -245,10 +245,16 @@
           <!-- Menu -->
           <div
             class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5 dark:ring-1 dark:ring-white dark:ring-opacity-5">
+            <div class="px-4 py-2 text-[11px] uppercase tracking-wide text-gray-500 dark:text-gray-400 font-semibold">Configurações</div>
             <a (click)="handleSettings()"
               class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-              <span class="material-symbols-outlined mr-3 text-base text-gray-500 dark:text-gray-400">settings</span>
-              <span>Configurações</span>
+              <span class="material-symbols-outlined mr-3 text-base text-gray-500 dark:text-gray-400">tune</span>
+              <span>Configuração Geral</span>
+            </a>
+            <a (click)="handlePush()"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <span class="material-symbols-outlined mr-3 text-base text-gray-500 dark:text-gray-400">campaign</span>
+              <span>Push SmartZap</span>
             </a>
             <a (click)="handleSwitchWorkspace()"
               class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
@@ -324,6 +330,9 @@
       }
       @case('settings') {
       <app-settings (exit)="navigateToDashboard()"></app-settings>
+      }
+      @case('pushManager') {
+      <app-push-manager></app-push-manager>
       }
       }
     </main>

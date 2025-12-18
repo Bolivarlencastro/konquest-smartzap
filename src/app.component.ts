@@ -26,12 +26,13 @@ import { CoursePlayerComponent } from './components/course-player/course-player.
 import { SettingsComponent } from './components/settings/settings.component';
 import { ContentManagementComponent } from './components/content-management/content-management.component';
 import { EnrollmentManagementComponent } from './components/enrollment-management/enrollment-management.component';
+import { PushManagerComponent } from './components/push-manager/push-manager.component';
 
 
 import { Course, Trail, Event, Channel, Pulse, PulseType, Group } from './types';
 import { MOCK_COURSE_TEMPLATE, EMPTY_COURSE, EMPTY_TRAIL, MOCK_TRAIL_TEMPLATE, EMPTY_EVENT, EMPTY_CHANNEL, EMPTY_PULSE } from './mock-data';
 
-type ViewState = 'dashboard' | 'createCourseModal' | 'aiCreationModal' | 'importSourceModal' | 'fileUploadModal' | 'courseWizard' | 'trailWizard' | 'createTrailModal' | 'aiTrailCreationModal' | 'eventWizard' | 'createEventModal' | 'aiEventCreationModal' | 'channelWizard' | 'createChannelModal' | 'aiChannelCreationModal' | 'createPulseModal' | 'pulseEditorModal' | 'groupManagement' | 'createGroupModal' | 'quizCreationMethod' | 'quizAiAssistant' | 'quizEditor' | 'coursePlayer' | 'settings' | 'contentManagement' | 'enrollmentManagement';
+type ViewState = 'dashboard' | 'createCourseModal' | 'aiCreationModal' | 'importSourceModal' | 'fileUploadModal' | 'courseWizard' | 'trailWizard' | 'createTrailModal' | 'aiTrailCreationModal' | 'eventWizard' | 'createEventModal' | 'aiEventCreationModal' | 'channelWizard' | 'createChannelModal' | 'aiChannelCreationModal' | 'createPulseModal' | 'pulseEditorModal' | 'groupManagement' | 'createGroupModal' | 'quizCreationMethod' | 'quizAiAssistant' | 'quizEditor' | 'coursePlayer' | 'settings' | 'contentManagement' | 'enrollmentManagement' | 'pushManager';
 type ActiveTab = 'destaques' | 'trilhas' | 'cursos' | 'eventos';
 
 @Component({
@@ -65,7 +66,8 @@ type ActiveTab = 'destaques' | 'trilhas' | 'cursos' | 'eventos';
     CoursePlayerComponent,
     SettingsComponent,
     ContentManagementComponent,
-    EnrollmentManagementComponent
+    EnrollmentManagementComponent,
+    PushManagerComponent
   ],
 })
 export class AppComponent {
@@ -155,6 +157,11 @@ export class AppComponent {
 
   handleSettings(): void {
     this.viewState.set('settings');
+    this.showUserMenu.set(false);
+  }
+
+  handlePush(): void {
+    this.viewState.set('pushManager');
     this.showUserMenu.set(false);
   }
 
