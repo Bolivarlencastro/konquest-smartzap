@@ -96,6 +96,17 @@ export class PushManagerComponent {
     return vars;
   });
 
+  renderedTemplate = computed(() => {
+    const tpl = this.selectedTemplate();
+    if (!tpl) return null;
+    let content = tpl.content;
+    this.extractedVariables().forEach(key => {
+      const value = this.variableValues()[key] || `{{${key}}}`;
+      content = content.split(`{{${key}}}`).join(value);
+    });
+    return { ...tpl, content };
+  });
+
   setTemplate(tpl: MessageTemplate): void {
     this.selectedTemplate.set(tpl);
   }
