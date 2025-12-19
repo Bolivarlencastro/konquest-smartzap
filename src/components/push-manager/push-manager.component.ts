@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectionStrategy, signal, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, computed, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 type ViewMode = 'dashboard' | 'sender';
@@ -17,7 +17,7 @@ type Contact = { id: number; nome: string; telefone: string; erro?: string };
   templateUrl: './push-manager.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class PushManagerComponent {
+export class PushManagerComponent implements OnInit {
   view = signal<ViewMode>('dashboard');
   step = signal<number>(1);
 
@@ -253,8 +253,8 @@ export class PushManagerComponent {
     return map[key] ?? 'Digite o valor';
   }
 
-  constructor() {
-    if (this.templates.length) {
+  ngOnInit(): void {
+    if (!this.selectedTemplate() && this.templates.length) {
       this.selectedTemplate.set(this.templates[0]);
     }
   }
