@@ -271,4 +271,12 @@ export class PushManagerComponent implements OnInit {
       console.log('Selected template after ngOnInit:', this.selectedTemplate());
     }
   }
+
+  toggleAllContacts(checked: boolean): void {
+    this.contacts.update(list => list.map(item => ({ ...item, selected: checked })));
+  }
+
+  toggleContact(id: number): void {
+    this.contacts.update(list => list.map(item => item.id === id ? { ...item, selected: !item.selected } : item));
+  }
 }
