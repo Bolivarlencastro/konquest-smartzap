@@ -196,8 +196,10 @@ export class PushManagerComponent implements OnInit {
   }
 
   handleNext(): void {
-    if (this.step() < 4) {
-      this.step.update(s => s + 1);
+    if (this.step() >= 4) return;
+    const next = this.step() + 1;
+    if (!this.isStepDisabled(next)) {
+      this.step.set(next);
     }
   }
 
