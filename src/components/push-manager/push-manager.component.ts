@@ -210,7 +210,6 @@ export class PushManagerComponent implements OnInit {
       if (!this.selectedTemplate() || !this.fileName() || !this.dispatchDate()) return true;
       if (this.isLinkedToCourse() && !this.selectedCourseId()) return true;
       if (!this.isLinkedToCourse() && !this.campaignName().trim()) return true;
-      if (Object.values(this.variableValues()).some(v => !v.trim())) return true;
     }
     return false;
   }
