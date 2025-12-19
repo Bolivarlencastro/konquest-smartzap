@@ -167,7 +167,7 @@
           <div class="grid grid-cols-1 xl:grid-cols-[1fr_1fr_0.9fr] gap-4 lg:divide-x lg:divide-gray-100">
             <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex flex-col min-h-[520px]">
               <div class="flex items-center justify-between mb-3">
-                <p class="text-xs uppercase tracking-wider text-gray-500 font-bold">Selecione o modelo</p>
+                <p class="text-xs uppercase tracking-wider text-gray-600 font-bold" style="color:#111827">Selecione o modelo</p>
                 <span class="text-[11px] font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{{ templates.length }}</span>
               </div>
               <div class="overflow-y-auto space-y-2 pr-1" style="max-height: 520px;">
@@ -175,8 +175,8 @@
                     class="w-full text-left border rounded-xl px-3 py-3 transition shadow-sm hover:shadow-md"
                     [class.border-purple-700]="selectedTemplate()?.id === tpl.id"
                     [class.bg-purple-50]="selectedTemplate()?.id === tpl.id">
-                    <p class="text-sm font-semibold text-gray-900 mb-1">{{ tpl.name }}</p>
-                    <p class="text-xs text-gray-600 line-clamp-2 whitespace-pre-wrap">{{ tpl.content }}</p>
+                    <p class="text-sm font-semibold text-gray-900 mb-1" style="color:#0f172a">{{ tpl.name }}</p>
+                    <p class="text-xs text-gray-700 line-clamp-2 whitespace-pre-wrap" style="color:#1f2937">{{ tpl.content }}</p>
                   </button>
               </div>
             </div>
@@ -184,15 +184,15 @@
             <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4 min-h-[520px]">
               <div class="flex items-center gap-2 text-sm font-semibold text-gray-900">
                 <span class="material-symbols-outlined text-purple-600 text-base">tune</span>
-                <span>Parâmetros do Template</span>
+                <span style="color:#0f172a">Parâmetros do Template</span>
               </div>
               @if (extractedVariables().length === 0) {
-                <p class="text-xs text-gray-500">Selecione um template para preencher as variáveis.</p>
+                <p class="text-xs text-gray-500" style="color:#6b7280">Selecione um template para preencher as variáveis.</p>
               } @else {
                 <div class="space-y-3">
                   @for (v of extractedVariables(); track v) {
                     <label class="space-y-1 block">
-                      <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">{{ formatVariableLabel(v) }}</span>
+                      <span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide" style="color:#374151">{{ formatVariableLabel(v) }}</span>
                       <input type="text" [ngModel]="variableValues()[v]" (ngModelChange)="setVariable(v, $event)"
                         class="w-full px-3 py-2 border rounded-lg focus:border-purple-700 focus:ring-purple-700 outline-none bg-gray-50"
                         [placeholder]="variablePlaceholder(v)" />
