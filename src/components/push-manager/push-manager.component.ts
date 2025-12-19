@@ -15,7 +15,7 @@ type Contact = { id: number; nome: string; telefone: string; erro?: string };
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './push-manager.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PushManagerComponent {
   view = signal<ViewMode>('dashboard');

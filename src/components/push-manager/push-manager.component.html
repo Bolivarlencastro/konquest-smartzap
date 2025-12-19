@@ -164,7 +164,7 @@
 
       <div class="flex-1 p-6 lg:p-10 max-w-[1400px] mx-auto w-full space-y-6">
         @if (step() === 1) {
-          <div class="grid grid-cols-1 xl:grid-cols-[1fr_1fr_0.9fr] gap-4 lg:divide-x lg:divide-gray-100">
+          <div class="grid grid-cols-1 xl:grid-cols-[1fr_1fr_0.9fr] gap-4 lg:divide-x lg:divide-gray-100" *ngIf="templates.length">
             <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex flex-col min-h-[520px]">
               <div class="flex items-center justify-between mb-3">
                 <p class="text-xs uppercase tracking-wider text-gray-500 font-bold">Selecione o modelo</p>
