@@ -49,6 +49,13 @@ export class PushManagerComponent {
       buttons: ['Acessar curso', 'Fazer a matrícula agora'],
     },
     {
+      id: 'temp_lan_3',
+      name: 'Lançamento – Tom de exclusividade',
+      content:
+        '👀 Novidade para você!\n\nO curso {{nome_do_curso}} acaba de ser lançado e já está disponível para começar hoje mesmo.\n\nAproveite para sair na frente e desenvolver {{competência_chave}}.',
+      buttons: ['🚀 Quero começar'],
+    },
+    {
       id: 'temp_eng_1',
       name: 'Engajamento – Reativação simples',
       content:
@@ -56,11 +63,72 @@ export class PushManagerComponent {
       buttons: ['Iniciar curso', 'Ver outras sugestões'],
     },
     {
+      id: 'temp_eng_2',
+      name: 'Engajamento – Valor prático',
+      content:
+        'Sabia que o curso {{nome_do_curso}} pode ajudar você a {{benefício_prático}}?\n\nEle foi pensado para ser rápido, direto e fácil de aplicar no trabalho.',
+      buttons: ['Acessar agora', 'Conhecer outros cursos'],
+    },
+    {
+      id: 'temp_eng_3',
+      name: 'Engajamento – Tempo curto',
+      content:
+        '⏱️ Falta de tempo não precisa ser um problema.\n\nO curso {{nome_do_curso}} pode ser feito em pequenos blocos, no seu ritmo.\n\nQue tal retomar hoje?',
+      buttons: ['🔄 Retomar curso'],
+    },
+    {
       id: 'temp_ind_1',
       name: 'Indicação – 3 cursos (escolha)',
       content:
         '👋 Oiee, selecionamos cursos que combinam com seu perfil 👇\n\n1️⃣ {{curso_1}}\n\n2️⃣ {{curso_2}}\n\n3️⃣ {{curso_3}}\n\nEscolha por onde quer começar ou explore o portal completo.',
       buttons: ['Matricular em um curso', 'Ver todas as opções'],
+    },
+    {
+      id: 'temp_ind_2',
+      name: 'Indicação – Tom consultivo',
+      content:
+        'Se você quer evoluir em {{área_de_desenvolvimento}}, esses cursos são um ótimo próximo passo:\n\n👉 {{curso_1}}\n\n👉 {{curso_2}}\n\n👉 {{curso_3}}',
+      buttons: ['Me matricular', 'Ver todos os cursos'],
+    },
+    {
+      id: 'temp_por_1',
+      name: 'Portal – Convite direto',
+      content:
+        'Já conhece nosso portal de cursos?\n\nLá você encontra conteúdos rápidos, práticos e focados no seu desenvolvimento profissional.\n\n👉 Acesse aqui: {{link_encurtado}}',
+      buttons: ['Acessar portal'],
+    },
+    {
+      id: 'temp_por_2',
+      name: 'Portal – Benefícios claros',
+      content:
+        '📚 Um portal completo para aprender no seu ritmo.\n\nCursos curtos, conteúdos atualizados e foco em aplicação prática.\n\n{{texto_livre}}\n\nConheça agora: {{link_encurtado}}',
+    },
+    {
+      id: 'temp_por_3',
+      name: 'Portal – Curiosidade',
+      content:
+        'Você sabia que tem acesso a diversos cursos focados em {{tema_principal}}?\n\nExplore o portal e encontre o conteúdo ideal para você:\n\n{{link_encurtado}}',
+    },
+    {
+      id: 'temp_ret_1',
+      name: 'Retomada – Lembrete leve',
+      content:
+        '👋 Oi, {{nome}}!\n\nVocê iniciou o curso {{nome_do_curso}}, mas ainda não concluiu.\n\nQue tal continuar de onde parou?',
+      buttons: ['🔄 Continuar curso'],
+    },
+    {
+      id: 'temp_ret_2',
+      name: 'Retomada – Reforço de benefício',
+      content:
+        'Falta pouco para concluir o curso {{nome_do_curso}}!\n\nAo finalizar, você vai desenvolver {{benefício_final}} e aplicar isso no dia a dia.',
+      buttons: ['✅ Finalizar curso'],
+    },
+    {
+      id: 'temp_ret_3',
+      name: 'Retomada – Conquista',
+      content:
+        '🎯 Você já deu o primeiro passo no curso {{nome_do_curso}}.\n\nAgora é só continuar para concluir e aproveitar todo o conteúdo.',
+      buttons: ['🚀 Retomar agora'],
     },
   ];
 
@@ -183,5 +251,11 @@ export class PushManagerComponent {
       principal_benefício: 'Benefício principal',
     };
     return map[key] ?? 'Digite o valor';
+  }
+
+  constructor() {
+    if (this.templates.length) {
+      this.selectedTemplate.set(this.templates[0]);
+    }
   }
 }
