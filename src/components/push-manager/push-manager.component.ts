@@ -154,14 +154,7 @@ export class PushManagerComponent implements OnInit {
     if (!tpl) return [];
     const regex = /{{(.*?)}}/g;
     const matches = tpl.content.matchAll(regex);
-    const vars = Array.from(new Set(Array.from(matches).map(m => m[1])));
-    this.variableValues.set(
-      vars.reduce<Record<string, string>>((acc, key) => {
-        acc[key] = this.variableValues()[key] ?? '';
-        return acc;
-      }, {}),
-    );
-    return vars;
+    return Array.from(new Set(Array.from(matches).map(m => m[1])));
   });
 
   renderedTemplate = computed(() => {
@@ -177,6 +170,7 @@ export class PushManagerComponent implements OnInit {
 
   setTemplate(tpl: MessageTemplate): void {
     this.selectedTemplate.set(tpl);
+    this.syncVariables(tpl);
   }
 
   setVariable(key: string, value: string): void {
@@ -253,9 +247,26 @@ export class PushManagerComponent implements OnInit {
     return map[key] ?? 'Digite o valor';
   }
 
+  private syncVariables(tpl: MessageTemplate): void {
+    const regex = /{{(.*?)}}/g;
+    const matches = tpl.content.matchAll(regex);
+    const vars = Array.from(new Set(Array.from(matches).map(m => m[1])));
+    this.variableValues.set(
+      vars.reduce<Record<string, string>>((acc, key) => {
+        acc[key] = this.variableValues()[key] ?? '';
+        return acc;
+      }, {}),
+    );
+  }
+
   ngOnInit(): void {
-    if (!this.selectedTemplate() && this.templates.length) {
-      this.selectedTemplate.set(this.templates[0]);
+    console.log('PushManagerComponent ngOnInit called.');
+    console.log('Templates array length in ngOnInit:', this.templates.length);
+    if (this.templates.length) {
+      const first = this.templates[0];
+      this.selectedTemplate.set(first);
+      this.syncVariables(first);
+      console.log('Selected template after ngOnInit:', this.selectedTemplate());
     }
   }
 }
