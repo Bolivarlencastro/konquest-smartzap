@@ -8,7 +8,7 @@ type PaymentStatus = 'Pendente' | 'Enviado';
 type ScheduledPush = { id: string; name: string; scheduledDate: string; totalPush: number; status: PaymentStatus };
 type PushCampaign = { id: string; courseName: string; dispatchDate: string; totalPush: number; investment: number };
 type MessageTemplate = { id: string; name: string; content: string; buttons?: string[] };
-type Contact = { id: number; nome: string; telefone: string; erro?: string };
+type Contact = { id: number; nome: string; telefone: string; email?: string; selected?: boolean; erro?: string };
 
 @Component({
   selector: 'app-push-manager',
@@ -136,7 +136,14 @@ export class PushManagerComponent implements OnInit {
   variableValues = signal<Record<string, string>>({});
   dispatchDate = signal<string>('');
   fileName = signal<string | null>(null);
-  contacts = signal<Contact[]>([]);
+  contacts = signal<Contact[]>([
+    { id: 1, nome: 'Super Admin', telefone: '11988887777', email: 'admin@keeps.com.br', selected: false },
+    { id: 2, nome: 'Janes', telefone: '21977776666', email: 'testsddseasddc@dexssasamples.com', selected: false },
+    { id: 3, nome: 'Ana Pires', telefone: '118888', email: 'ana.pires@intercityhoteis.com.br', selected: false, erro: 'Formato inválido' },
+    { id: 4, nome: 'Bernard Oliveira', telefone: '31955554444', email: 'bernard.oliveira@promofarma.com.br', selected: false },
+    { id: 5, nome: 'Patricia Costa', telefone: '11999999999', email: 'patricia.costa@promofarma.com.br', selected: false },
+    { id: 6, nome: 'Kelly Santos', telefone: '11977776666', email: 'kellysantos.ted@ispecas.com.br', selected: false },
+  ]);
   isSubmitting = signal<boolean>(false);
   isLinkedToCourse = signal<boolean>(true);
   selectedCourseId = signal<string>('');
@@ -179,12 +186,6 @@ export class PushManagerComponent implements OnInit {
 
   handleFileUpload(fileName: string): void {
     this.fileName.set(fileName);
-    this.contacts.set([
-      { id: 1, nome: 'Ana Silva', telefone: '11988887777' },
-      { id: 2, nome: 'Bruno Costa', telefone: '21977776666' },
-      { id: 3, nome: 'Carla Dias', telefone: '118888', erro: 'Formato inválido' },
-      { id: 4, nome: 'Daniel Oliveira', telefone: '31955554444' },
-    ]);
   }
 
   handleBack(): void {
@@ -205,9 +206,9 @@ export class PushManagerComponent implements OnInit {
 
   isStepDisabled(stepId: number): boolean {
     if (stepId === 2 && !this.selectedTemplate()) return true;
-    if (stepId === 3 && (!this.selectedTemplate() || !this.fileName())) return true;
+    if (stepId === 3 && !this.selectedTemplate()) return true;
     if (stepId === 4) {
-      if (!this.selectedTemplate() || !this.fileName() || !this.dispatchDate()) return true;
+      if (!this.selectedTemplate() || !this.dispatchDate()) return true;
       if (this.isLinkedToCourse() && !this.selectedCourseId()) return true;
       if (!this.isLinkedToCourse() && !this.campaignName().trim()) return true;
     }
